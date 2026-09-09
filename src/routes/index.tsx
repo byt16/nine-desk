@@ -14,8 +14,8 @@ import {
   cvesByBand,
   cvesByYear,
   deskStats,
-  gapCves,
   latestKev,
+  pass2Cves,
   topMisconfigs,
 } from "@/lib/data";
 
@@ -27,7 +27,7 @@ function Home() {
   const mis = topMisconfigs(6);
   const years = cvesByYear();
   const bands = cvesByBand();
-  const added = gapCves();
+  const added = pass2Cves();
 
   return (
     <main>
@@ -50,8 +50,8 @@ function Home() {
         <Stat label="CISA KEV" value={String(stats.kev)} hint="Known exploited" />
         <Stat
           label="Added this pass"
-          value={String(stats.gapAdded)}
-          hint={`First cut was ${stats.firstCut}`}
+          value={String(stats.pass2Added)}
+          hint="VPN / edge / RMM / mail"
         />
         <Stat
           label="2026 KEV 9+"
@@ -184,10 +184,11 @@ function Home() {
           Coverage
         </p>
         <p className="mt-3 max-w-2xl text-sm leading-relaxed text-muted">
-          First cut held {stats.firstCut} records and missed the class-defining
-          10.0s — React2Shell first. This pass added {stats.gapAdded}. CISA KEV
-          lists {stats.kev2026Critical} criticals in 2026 alone; NINE holds the
-          internet-facing initial-access subset, not every 9.0 in NVD. No
+          First cut held {stats.firstCut}. A later pass added {stats.gapAdded}{" "}
+          (React2Shell, Sangoma, UniFi). This pass adds {stats.pass2Added}{" "}
+          internet-facing 2026 KEV 9+ — VPN, edge, RMM, mail, identity. CISA
+          lists {stats.kev2026Critical} criticals in 2026; NINE holds {stats.y2026}.
+          Still not WordPress/Joomla plugins, Langflow, or screensharing. No
           scanners. No payloads.
         </p>
         <div className="mt-5 flex items-center gap-3 text-sm text-muted">
@@ -203,7 +204,7 @@ function Home() {
               Added this pass
             </h2>
             <p className="mt-1 text-sm text-muted">
-              {added.length} high-signal KEV 9+ records that were missing.
+              {added.length} 2026 KEV 9+ on VPN, edge, RMM, mail, identity.
             </p>
           </div>
           <Link

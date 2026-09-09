@@ -24,6 +24,6 @@ npm run dev
 
 | | |
 |---|---|
-| On the desk | 52 CVEs ≥ 9.0 |
-| CISA KEV | 52 known-exploited |
-| 2026 KEV 9+ held | 21 of 71 (internet-facing initial access) |
+| On the desk | 70 CVEs ≥ 9.0 |
+| CISA KEV | 70 known-exploited |
+| 2026 KEV 9+ held | 39 of 71 (internet-facing initial access) |

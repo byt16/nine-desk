@@ -3,7 +3,7 @@ import { useMemo, useState } from "react";
 import { CveRow } from "@/components/cve-row";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { CVES, searchCves, isGapCve, type CveCategory, CATEGORY_LABEL } from "@/lib/data";
+import { CVES, searchCves, isPass2Cve, type CveCategory, CATEGORY_LABEL } from "@/lib/data";
 import { cn } from "@/lib/utils";
 
 const YEARS = [...new Set(CVES.map((c) => c.published.slice(0, 4)))].sort(
@@ -26,7 +26,7 @@ function CvesIndex() {
     return searchCves(q)
       .filter((c) => (kev ? c.kev : true))
       .filter((c) => (ransom ? c.ransomware : true))
-      .filter((c) => (gap ? isGapCve(c.id) : true))
+      .filter((c) => (gap ? isPass2Cve(c.id) : true))
       .filter((c) => (year ? c.published.startsWith(year) : true))
       .filter((c) => (category ? c.category === category : true))
       .sort((a, b) => b.cvss - a.cvss || b.published.localeCompare(a.published));

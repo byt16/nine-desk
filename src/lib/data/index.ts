@@ -1,5 +1,6 @@
 import { CVES as CORE_CVES } from "./cves";
 import { GAP_CVES, GAP_PASS } from "./cves-gap";
+import { PASS2_CVES, PASS2 } from "./cves-pass2";
 import { MISCONFIGS } from "./misconfigs";
 import type { Cve, Misconfig } from "./types";
 
@@ -7,15 +8,25 @@ export type { Cve, CveCategory, Misconfig } from "./types";
 export { CATEGORY_LABEL } from "./types";
 export { MISCONFIGS } from "./misconfigs";
 export { GAP_PASS, GAP_CVES } from "./cves-gap";
+export { PASS2, PASS2_CVES } from "./cves-pass2";
 
-export const CVES: Cve[] = [...CORE_CVES, ...GAP_CVES];
+export const CVES: Cve[] = [...CORE_CVES, ...GAP_CVES, ...PASS2_CVES];
 
 const CVE_BY_ID = new Map(CVES.map((c) => [c.id, c]));
 const MIS_BY_SLUG = new Map(MISCONFIGS.map((m) => [m.slug, m]));
 const GAP_IDS = new Set(GAP_CVES.map((c) => c.id));
+const PASS2_IDS = new Set(PASS2_CVES.map((c) => c.id));
 
 export function isGapCve(id: string): boolean {
   return GAP_IDS.has(id);
+}
+
+export function isPass2Cve(id: string): boolean {
+  return PASS2_IDS.has(id);
+}
+
+export function isAddedCve(id: string): boolean {
+  return GAP_IDS.has(id) || PASS2_IDS.has(id);
 }
 
 export function getCve(id: string): Cve | undefined {
@@ -86,6 +97,7 @@ export function deskStats() {
     gapAdded: GAP_PASS.added,
     firstCut: GAP_PASS.firstCut,
     kev2026Critical: GAP_PASS.kev2026Critical,
+    pass2Added: PASS2.added,
   };
 }
 
@@ -131,6 +143,12 @@ export function topMisconfigs(limit = 6): Misconfig[] {
 
 export function gapCves(): Cve[] {
   return [...GAP_CVES].sort(
+    (a, b) => b.published.localeCompare(a.published) || b.cvss - a.cvss,
+  );
+}
+
+export function pass2Cves(): Cve[] {
+  return [...PASS2_CVES].sort(
     (a, b) => b.published.localeCompare(a.published) || b.cvss - a.cvss,
   );
 }
